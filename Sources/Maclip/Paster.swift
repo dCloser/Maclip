@@ -7,7 +7,17 @@ import Carbon.HIToolbox
 /// CoreGraphics calls for that permission (the Accessibility API itself is off-limits to
 /// sandboxed apps, which is why Maclip doesn't read the text cursor position).
 enum Paster {
-    static var isTrusted: Bool { CGPreflightPostEventAccess() }
+    static var isTrusted: Bool {
+        #if DEBUG
+        if let snapshotTrusted { return snapshotTrusted }
+        #endif
+        return CGPreflightPostEventAccess()
+    }
+
+    #if DEBUG
+    /// Lets snapshot mode render the windows as if auto-paste were enabled.
+    static var snapshotTrusted: Bool?
+    #endif
 
     /// Shows the system prompt that adds Maclip to the Accessibility list (turned off) and
     /// offers to open System Settings. Returns true if access is already granted.

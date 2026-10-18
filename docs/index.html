@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maclip – Clipboard History for Mac</title>
+  <meta name="description" content="Maclip is a free, private clipboard history app for the Mac. Press ⇧⌘V to search everything you've copied and paste it anywhere.">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header class="hero">
+    <img src="icon.png" alt="Maclip icon">
+    <h1>Maclip</h1>
+    <p class="tagline">Everything you copy, one shortcut away. Press <kbd>⇧⌘V</kbd> in any app to search your clipboard history and paste it right where you're typing.</p>
+    <div class="buttons">
+      <a class="button" href="https://github.com/dCloser/Maclip/releases/latest">Download for Mac</a>
+      <a class="button secondary" href="https://github.com/dCloser/Maclip">Source on GitHub</a>
+    </div>
+    <p class="muted">Free and open source · macOS 14 Sonoma or later</p>
+  </header>
+
+  <img class="shot" src="screenshots/1-history.jpg" alt="The Maclip panel listing recently copied text and an image">
+
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="card"><h3>Text and images</h3><p>Every word, paragraph, link and screenshot you copy is saved, with image thumbnails.</p></div>
+    <div class="card"><h3>Instant search</h3><p>Start typing to filter your whole history. <kbd>⌘1</kbd>–<kbd>⌘9</kbd> pick the top items.</p></div>
+    <div class="card"><h3>Pin favourites</h3><p>Pinned snippets stay at the top and are never removed.</p></div>
+    <div class="card"><h3>Pastes for you</h3><p>Choose an item and Maclip pastes it into the app you were using.</p></div>
+    <div class="card"><h3>Your rules</h3><p>Keep history forever or for days, keep 25–1,000 items, pick light or dark, set your own shortcut.</p></div>
+    <div class="card"><h3>Private by design</h3><p>No network access, no accounts, no tracking. Your history never leaves your Mac.</p></div>
+  </div>
+
+  <div class="grid">
+    <img class="shot" src="screenshots/2-search.jpg" alt="Searching the clipboard history">
+    <img class="shot" src="screenshots/3-preferences.jpg" alt="Maclip preferences">
+    <img class="shot" src="screenshots/4-private.jpg" alt="Maclip welcome window explaining privacy">
+  </div>
+
+  <h2 id="support">Support</h2>
+  <div class="doc">
+    <h3>Getting started</h3>
+    <p>After installing, Maclip appears as a clipboard icon in the menu bar. Copy something, then press <kbd>⇧⌘V</kbd>. Use the arrow keys and <kbd>Return</kbd>, or click, to paste an item. Press <kbd>Esc</kbd> to close.</p>
+
+    <h3>Auto-paste isn't working</h3>
+    <p>Maclip needs permission to press <kbd>⌘V</kbd> for you. Open <strong>System Settings → Privacy &amp; Security → Accessibility</strong> and turn on <strong>Maclip</strong>. If it's already on but doesn't work, for example after an update, remove it with <strong>−</strong>, add it again with <strong>+</strong>, and reopen Maclip. Without the permission Maclip still copies the item; just press <kbd>⌘V</kbd> yourself.</p>
+
+    <h3>Nothing is being recorded</h3>
+    <p>Recent macOS versions can block apps from reading the clipboard. If Maclip's menu shows "Clipboard reading restricted", allow Maclip under <strong>System Settings → Privacy &amp; Security</strong>. Items that password managers mark as private are skipped on purpose.</p>
+
+    <h3>My screenshots don't show up</h3>
+    <p><kbd>⇧⌘4</kbd> saves screenshots as files. Add <kbd>Control</kbd> (<kbd>⌃⇧⌘4</kbd>) to copy the screenshot to the clipboard instead, and Maclip will keep it.</p>
+
+    <h3>The shortcut conflicts with another app</h3>
+    <p>Some apps use <kbd>⇧⌘V</kbd> for "Paste and Match Style". Pick a different shortcut in Maclip's <strong>Preferences → Keyboard Shortcuts</strong>.</p>
+
+    <h3>Contact</h3>
+    <p>Found a bug or have an idea? <a href="https://github.com/dCloser/Maclip/issues">Open an issue on GitHub</a>.</p>
+  </div>
+
+  <footer>
+    <p><a href="privacy.html">Privacy Policy</a> · <a href="https://github.com/dCloser/Maclip">GitHub</a> · <a href="https://github.com/dCloser/Maclip/blob/main/LICENSE">MIT License</a></p>
+    <p>© 2026 Oghenefejiro Cornelius</p>
+  </footer>
+</main>
+</body>
+</html>

@@ -23,7 +23,8 @@ struct HistoryView: View {
             footer
         }
         .frame(width: 400, height: 460)
-        .background(VisualEffect())
+        // The panel's title bar is hidden; let the background run up under it too.
+        .background(VisualEffect().ignoresSafeArea())
         .onChange(of: model.openToken) { searchFocused = true }
         .onChange(of: model.query) { model.selectedID = items.first?.id }
         .onAppear { searchFocused = true }
@@ -63,7 +64,7 @@ struct HistoryView: View {
                 .strokeBorder(searchFocused ? Color.accentColor.opacity(0.7) : Color.primary.opacity(0.1)))
         }
         .padding(.horizontal, 12)
-        .padding(.top, 14)
+        .padding(.top, 2)
         .padding(.bottom, 10)
     }
 

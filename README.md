@@ -130,6 +130,16 @@ BUILD_NUMBER=1 ./make-appstore.sh
 - `BUILD_NUMBER` must go up with every upload, even for the same version.
 - Upload `build/Maclip.pkg` with Apple's free **Transporter** app (Mac App Store). Then pick the build in App Store Connect and **Submit for Review**.
 
+### Listing material
+
+Everything for the App Store Connect form is ready in this repo:
+- [`AppStore/listing.md`](AppStore/listing.md): name, subtitle, description, keywords, URLs, privacy answers and review notes, all within Apple's character limits.
+- `AppStore/screenshots/`: four 2880 × 1800 screenshots, rendered from the app with sample data. To regenerate them after UI changes:
+  ```bash
+  swift build && "$(swift build --show-bin-path)/Maclip" --snapshot build/snapshots && swift AppStore/make-screenshots.swift
+  ```
+- `docs/`: the website with the support page and privacy policy. It goes live at https://dcloser.github.io/Maclip/ once GitHub Pages is on: repo **Settings → Pages → Deploy from a branch → `main` / `/docs`**.
+
 ### Listing checklist
 
 - Screenshots: at least one, 2880×1800 or 1440×900.
@@ -164,6 +174,9 @@ Support/make-icon.swift                    draws the icon → Support/Assets.xca
 build.sh                                   builds and signs build/Maclip.app
 make-dmg.sh                                packages build/Maclip.dmg (optionally notarized)
 make-appstore.sh                           builds build/Maclip.pkg for App Store upload
+AppStore/listing.md                        App Store Connect text, URLs, privacy answers, review notes
+AppStore/make-screenshots.swift            composes AppStore/screenshots/ from the snapshot renders
+docs/                                      GitHub Pages site: support page and privacy policy
 ```
 
 There are no third-party dependencies.

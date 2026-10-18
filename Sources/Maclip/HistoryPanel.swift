@@ -79,6 +79,10 @@ final class PanelController: NSObject, NSWindowDelegate {
         installKeyMonitor()
     }
 
+    #if DEBUG
+    func setQueryForSnapshot(_ query: String) { model.query = query }
+    #endif
+
     func close() {
         removeKeyMonitor()
         panel.orderOut(nil)

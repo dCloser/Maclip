@@ -11,6 +11,11 @@ enum Snapshots {
 
     static func run(into dir: URL) {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        Paster.snapshotTrusted = true
+        // A bare debug binary has no bundle icon; use the real one from the source tree.
+        let icon = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .appendingPathComponent("../../Support/AppIcon-1024.png").standardizedFileURL
+        if let image = NSImage(contentsOf: icon) { NSApp.applicationIconImage = image }
         let store = HistoryStore(fileURL: nil)
         let now = Date()
         let samples: [(String, TimeInterval)] = [
@@ -18,6 +23,7 @@ enum Snapshots {
             ("git checkout -b feature/clipboard-search", 5 * 3600),
             ("https://developer.apple.com/documentation/appkit/nspasteboard", 3 * 3600),
             ("Dear Ms. Patel,\nThank you for your quick reply.\nI've attached the signed contract.", 2400),
+            ("Link to the design review: https://figma.com/file/maclip-v1", 1800),
             ("#4F5BF0", 600),
             ("Maclip keeps everything you copy, one shortcut away.", 60),
         ]
@@ -30,13 +36,15 @@ enum Snapshots {
         let welcome = WelcomeController()
         keepAlive = [store, panel, prefs, welcome]
 
-        func capture(_ suffix: String) {
-            let windows = NSApp.windows.filter { $0.isVisible && $0.frame.width > 50 }
+        func capture(_ suffix: String, only panelOnly: Bool = false) {
+            let windows = NSApp.windows.filter { $0.isVisible && $0.frame.width > 50 && (!panelOnly || $0 is HistoryPanel) }
             for window in windows {
-                guard let view = window.contentView?.superview ?? window.contentView,
-                      let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { continue }
-                view.cacheDisplay(in: view.bounds, to: rep)
-                let name = window is HistoryPanel ? "panel"
+                // The panel's title bar is invisible, so render only its content; other
+                // windows include their title bar (the frame view).
+                guard let view = window is HistoryPanel ? window.contentView
+                                 : (window.contentView?.superview ?? window.contentView),
+                      let rep = render(view, scale: 3) else { continue }
+                let name = window is HistoryPanel ? (panelOnly ? "panel-search" : "panel")
                     : window.title.isEmpty ? (window.frame.width < 400 ? "about" : "welcome") : "preferences"
                 let url = dir.appendingPathComponent("\(name)-\(suffix).png")
                 try? rep.representation(using: .png, properties: [:])?.write(to: url)
@@ -52,9 +60,25 @@ enum Snapshots {
             NSApp.appearance = NSAppearance(named: .darkAqua)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 capture("dark")
-                NSApp.terminate(nil)
+                panel.setQueryForSnapshot("link")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    capture("dark", only: true)
+                    NSApp.terminate(nil)
+                }
             }
         }
+    }
+
+    /// Draws `view` at `scale` × its point size (sharper than the screen's backing scale).
+    private static func render(_ view: NSView, scale: CGFloat) -> NSBitmapImageRep? {
+        let size = view.bounds.size
+        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width * scale),
+                                         pixelsHigh: Int(size.height * scale), bitsPerSample: 8,
+                                         samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                                         colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0) else { return nil }
+        rep.size = size
+        view.cacheDisplay(in: view.bounds, to: rep)
+        return rep
     }
 
     private static func sampleImage() -> Data? {
