@@ -6,7 +6,7 @@ Copy each field into App Store Connect (My Apps → Maclip). Limits are Apple's.
 
 | Field | Value |
 | --- | --- |
-| Name (30) | Maclip – Clipboard History |
+| Name (30) | Maclip: Clipboard Manager |
 | Subtitle (30) | Copy, search & paste anything |
 | Bundle ID | com.clipboard.Maclip |
 | SKU | maclip |
