@@ -35,6 +35,10 @@ xcrun actool Support/Assets.xcassets --compile "$APP/Contents/Resources" \
   --platform macosx --minimum-deployment-target 14.0 --app-icon AppIcon \
   --output-partial-info-plist "$OUT_DIR/actool-info.plist" --errors --warnings >/dev/null
 
+# Remove extended attributes (e.g. com.apple.quarantine on a downloaded provisioning
+# profile): the App Store rejects packages containing them (error 91109).
+xattr -cr "$APP"
+
 SIGN_IDENTITY="${SIGN_IDENTITY:--}"
 SIGN_FLAGS=(--force --sign "$SIGN_IDENTITY" --options runtime
             --entitlements "${ENTITLEMENTS:-Support/Maclip.entitlements}")
