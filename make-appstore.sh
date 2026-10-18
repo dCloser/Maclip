@@ -13,11 +13,13 @@ cd "${0:A:h}"
 PROFILE="${PROFILE:-Support/Maclip_App_Store.provisionprofile}"
 [[ -f "$PROFILE" ]] || { echo "error: provisioning profile not found: $PROFILE (set PROFILE=...)" >&2; exit 1; }
 
+# First identity in the keychain whose name starts with $1 (extra args go to find-identity).
 identity() {
-  security find-identity -v ${2:-} 2>/dev/null | awk -F'"' -v p="$1" 'index($2, p) == 1 {print $2; exit}'
+  local prefix="$1"; shift
+  security find-identity -v "$@" 2>/dev/null | awk -F'"' -v p="$prefix" 'index($2, p) == 1 {print $2; exit}' || true
 }
-APP_IDENTITY="${APP_IDENTITY:-$(identity "Apple Distribution:" "-p codesigning")}"
-[[ -z "$APP_IDENTITY" ]] && APP_IDENTITY="$(identity "3rd Party Mac Developer Application:" "-p codesigning")"
+APP_IDENTITY="${APP_IDENTITY:-$(identity "Apple Distribution:" -p codesigning)}"
+if [[ -z "$APP_IDENTITY" ]]; then APP_IDENTITY="$(identity "3rd Party Mac Developer Application:" -p codesigning)"; fi
 INSTALLER_IDENTITY="${INSTALLER_IDENTITY:-$(identity "3rd Party Mac Developer Installer:")}"
 [[ -n "$APP_IDENTITY" ]] || { echo "error: no Apple Distribution certificate in your keychain" >&2; exit 1; }
 [[ -n "$INSTALLER_IDENTITY" ]] || { echo "error: no Mac Installer Distribution certificate in your keychain" >&2; exit 1; }
