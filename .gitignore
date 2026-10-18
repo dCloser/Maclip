@@ -1,0 +1,16 @@
+# SwiftPM / Xcode
+.build/
+.swiftpm/
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Build output (app bundles, DMGs, App Store packages)
+build/
+
+# Signing material: never commit provisioning profiles or certificates
+*.provisionprofile
+*.p12
+*.cer
+
+# macOS
+.DS_Store
